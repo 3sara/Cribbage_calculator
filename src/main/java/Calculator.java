@@ -8,9 +8,22 @@ public class Calculator {
             suite[i/2] = input[i+1];
         }
 
-        System.out.println(rank);
+        int[] points = convertRank(rank);
         System.out.println(suite);
         // in input lista di (numero, seme)
         // funzione calcola punti, che chiamerà tutte le funzioni per i vari tipi di punto
+    }
+
+    public static int[] convertRank(String[] rank){
+        int[] points = new int[rank.length];
+        for (int i=0; i<rank.length; i++) {
+            points[i] = switch (rank[i]){
+                case "A" -> 1;
+                case "0", "J", "Q", "K" -> 10;
+                default -> Integer.parseInt(rank[i]);
+            };
+        }
+
+        return points;
     }
 }
