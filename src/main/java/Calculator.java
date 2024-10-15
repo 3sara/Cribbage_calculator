@@ -14,9 +14,7 @@ public class Calculator {
         int fifteenTwosPoints = fifteenTwos(points, 0, 0);
         int runsPairsPoints = runsPairs(rank);
         int flush=flush(rank,suite);
-        System.out.println(fifteenTwosPoints);
-        System.out.println(runsPairsPoints);
-        System.out.println(flush);
+        System.out.println("Total Points: " + (fifteenTwosPoints + runsPairsPoints + flush));
     }
 
     public static int[] convertRank(String[] rank){
