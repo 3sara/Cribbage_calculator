@@ -12,9 +12,9 @@ public class Calculator {
 
         int[] points = convertRank(rank);
         int fifteenTwosPoints = fifteenTwos(points, 0, 0);
-        int runs = runs(rank);
-        System.out.println(runs);
+        int runsPairsPoints = runsPairs(rank);
         System.out.println(fifteenTwosPoints);
+        System.out.println(runsPairsPoints);
     }
 
     public static int[] convertRank(String[] rank){
@@ -62,19 +62,32 @@ public class Calculator {
         return point;
     }
 
-    public static int runs(String[] rank){
-        int points=0;
+    public static int runsPairs(String[] rank){
+        int pointsRuns=0;
+        int pointsPairs=0;
         int[] enumerate= convertEnumerate(rank);
         Arrays.sort(enumerate);
-        int counter=0;
-        for (int i=0; i<enumerate.length-1; i++) {
-            if (enumerate[i+1]-enumerate[i]==1) counter++;
-            else if (enumerate[i+1]==enumerate[i]) continue;
-            else counter=0;
 
-            if (counter>2) points=counter;
+        int runs  = 0;
+        int pairs = 0;
+
+        for (int i=0; i<enumerate.length-1; i++) {
+            if (enumerate[i+1]-enumerate[i]==1) {
+                runs++;
+                pairs = 0;
+            }
+            else if (enumerate[i+1]==enumerate[i]) pairs++;
+            else {
+                runs = 0;
+                pairs = 0;
+            }
+
+            if (runs >2) pointsRuns = runs;
+            if (pairs == 1) pointsPairs += 2;
+            else if (pairs == 2) pointsPairs += 4;
+            else if (pairs == 3) pointsPairs += 6;
         }
 
-        return points;
+        return pointsRuns + pointsPairs;
     }
 }
