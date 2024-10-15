@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Calculator {
     public static void main(String[] args) {
         String[] input = args[0].split ("");
@@ -10,7 +12,8 @@ public class Calculator {
 
         int[] points = convertRank(rank);
         int fifteenTwosPoints = fifteenTwos(points, 0, 0);
-
+        int runs = runs(rank);
+        System.out.println(runs);
         System.out.println(fifteenTwosPoints);
     }
 
@@ -59,4 +62,19 @@ public class Calculator {
         return point;
     }
 
+    public static int runs(String[] rank){
+        int points=0;
+        int[] enumerate= convertEnumerate(rank);
+        Arrays.sort(enumerate);
+        int counter=0;
+        for (int i=0; i<enumerate.length-1; i++) {
+            if (enumerate[i+1]-enumerate[i]==1) counter++;
+            else if (enumerate[i+1]==enumerate[i]) continue;
+            else counter=0;
+
+            if (counter>2) points=counter;
+        }
+
+        return points;
+    }
 }
