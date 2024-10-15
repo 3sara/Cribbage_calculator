@@ -13,8 +13,10 @@ public class Calculator {
         int[] points = convertRank(rank);
         int fifteenTwosPoints = fifteenTwos(points, 0, 0);
         int runsPairsPoints = runsPairs(rank);
+        int flush=flush(rank,suite);
         System.out.println(fifteenTwosPoints);
         System.out.println(runsPairsPoints);
+        System.out.println(flush);
     }
 
     public static int[] convertRank(String[] rank){
@@ -89,5 +91,34 @@ public class Calculator {
         }
 
         return pointsRuns + pointsPairs;
+    }
+
+
+    public static int flush(String[] rank, String[] suite) {
+        boolean allSameSuite = true;
+        for (int i = 1; i < suite.length - 1; i++) {
+            if (!suite[i].equals(suite[0])) {
+                allSameSuite = false;
+                break;
+            }
+        }
+
+        int pointsFlush = 0;
+        if (allSameSuite) {
+            pointsFlush = 4;
+            if (suite[0].equals(suite[4])) {
+                pointsFlush += 1;
+            }
+        }
+
+        int pointsJack = 0;
+        for (int i = 0; i < 4; i++) {
+            if (rank[i].equals("J") && suite[i].equals(suite[4])) {
+                pointsJack = 1;
+                break;
+            }
+        }
+
+        return pointsFlush + pointsJack;
     }
 }
