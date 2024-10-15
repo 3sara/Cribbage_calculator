@@ -10,6 +10,8 @@ public class Calculator {
 
         int[] points = convertRank(rank);
         int fifteenTwosPoints = fifteenTwos(points, 0, 0);
+
+        System.out.println(fifteenTwosPoints);
     }
 
     public static int[] convertRank(String[] rank){
@@ -25,19 +27,19 @@ public class Calculator {
         return points;
     }
 
-    public static int fifteenTwos(int[] points, int start, int current) {
+    public static int fifteenTwos(int[] card_points, int start, int current) {
         // 2 or more cards sum to 15
         // Jack, King, Queen = 10
         // Ace = 1
-        int counter = 0;
+        int point = 0;
 
-        for (int i=start; i<points.length; i++) {
-            int value = current + points[i];
-            if (value == 15) counter++;
+        for (int i = start; i< card_points.length; i++) {
+            int value = current + card_points[i];
+            if (value == 15) point +=2;
             if (value < 15) {
-                counter += fifteenTwos(points, start = i+1, current = value);
+                point += fifteenTwos(card_points, start = i+1, current = value);
             }
         }
-        return 2*counter;
+        return point;
     }
 }
