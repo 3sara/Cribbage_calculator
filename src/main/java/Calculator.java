@@ -27,6 +27,22 @@ public class Calculator {
         return points;
     }
 
+    public static int[] convertEnumerate(String[] rank){
+        int[] enumerate = new int[rank.length];
+        for (int i=0; i<rank.length; i++) {
+            enumerate[i] = switch (rank[i]){
+                case "A" -> 0;
+                case "0" -> 10;
+                case "J" -> 11;
+                case "Q" -> 12;
+                case "K" -> 13;
+                default -> Integer.parseInt(rank[i]);
+            };
+        }
+
+        return enumerate;
+    }
+
     public static int fifteenTwos(int[] card_points, int start, int current) {
         // 2 or more cards sum to 15
         // Jack, King, Queen = 10
@@ -42,4 +58,5 @@ public class Calculator {
         }
         return point;
     }
+
 }
