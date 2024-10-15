@@ -9,9 +9,7 @@ public class Calculator {
         }
 
         int[] points = convertRank(rank);
-        System.out.println(suite);
-        // in input lista di (numero, seme)
-        // funzione calcola punti, che chiamerà tutte le funzioni per i vari tipi di punto
+        int fifteenTwosPoints = fifteenTwos(points, 0, 0);
     }
 
     public static int[] convertRank(String[] rank){
@@ -25,5 +23,21 @@ public class Calculator {
         }
 
         return points;
+    }
+
+    public static int fifteenTwos(int[] points, int start, int current) {
+        // 2 or more cards sum to 15
+        // Jack, King, Queen = 10
+        // Ace = 1
+        int counter = 0;
+
+        for (int i=start; i<points.length; i++) {
+            int value = current + points[i];
+            if (value == 15) counter++;
+            if (value < 15) {
+                counter += fifteenTwos(points, start = i+1, current = value);
+            }
+        }
+        return 2*counter;
     }
 }
