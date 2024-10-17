@@ -94,6 +94,9 @@ public class Calculator {
 
     public static int flush(String[] rank, String[] suite) {
         boolean allSameSuite = true;
+        int pointsFlush = 0;
+        int pointsJack = 0;
+
         for (int i = 1; i < suite.length - 1; i++) {
             if (!suite[i].equals(suite[0])) {
                 allSameSuite = false;
@@ -101,21 +104,14 @@ public class Calculator {
             }
         }
 
-        int pointsFlush = 0;
-        if (allSameSuite) {
-            pointsFlush = 4;
-            if (suite[0].equals(suite[4])) {
-                pointsFlush += 1;
-            }
-        }
-
-        int pointsJack = 0;
         for (int i = 0; i < 4; i++) {
             if (rank[i].equals("J") && suite[i].equals(suite[4])) {
                 pointsJack = 1;
                 break;
             }
         }
+
+        if (allSameSuite) pointsFlush = suite[0].equals(suite[4]) ? 5 : 4;
 
         return pointsFlush + pointsJack;
     }
