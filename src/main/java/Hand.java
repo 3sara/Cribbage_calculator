@@ -1,0 +1,45 @@
+import java.util.Arrays;
+
+public class Hand {
+    private final Card[] cards;
+
+    Hand (Card[] cards) throws Exception {
+        if (cards.length != 5) {
+            throw new Exception("E allora giochiamo con i piedi dai");
+        }
+
+        this.cards = cards;
+    }
+
+    Hand (String hand) throws Exception {
+        if (hand.length() != 10) {
+            throw new Exception("E allora giochiamo con i piedi dai");
+        }
+
+        Card[] cards = new Card[5];
+
+        for (int i = 0; i < hand.length(); i += 2) {
+            cards[i/2] = new Card(hand.substring(i, i+2));
+        }
+
+        this.cards = cards;
+    }
+
+    public int[] sorted(){
+        int[] enumerate = new int[5];
+        for (int i = 0; i < 5; i++) {
+            enumerate[i] = cards[i].getEnumeratedRank();
+        }
+        Arrays.sort(enumerate);
+
+        return enumerate;
+    }
+
+    public Card getCard(int index) {
+        return cards[index];
+    }
+
+    public Card[] getHand() {
+        return cards;
+    }
+}

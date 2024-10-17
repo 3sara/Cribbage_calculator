@@ -1,74 +1,31 @@
-import java.util.Arrays;
-
 public class Calculator {
-    public static void main(String[] args) {
-        String[] input = args[0].split ("");
-        String[] rank = new String[5];
-        String[] suite = new String[5];
-        for (int i=0; i<10; i=i+2) {
-            rank[i/2] = input[i];
-            suite[i/2] = input[i+1];
-        }
-
-        int[] points = convertRank(rank);
-        int fifteenTwosPoints = fifteenTwos(points, 0, 0);
-        int runsPairsPoints = runsPairs(rank);
-        int flush=flush(rank,suite);
-        System.out.println("Total Points: " + (fifteenTwosPoints + runsPairsPoints + flush));
+    public static int countPoints(Hand hand) {
+        return fifteenTwos(hand, 0, 0) + runsPairs(hand) + flush(hand);
     }
 
-    public static int[] convertRank(String[] rank){
-        int[] points = new int[rank.length];
-        for (int i=0; i<rank.length; i++) {
-            points[i] = switch (rank[i]){
-                case "A" -> 1;
-                case "0", "J", "Q", "K" -> 10;
-                default -> Integer.parseInt(rank[i]);
-            };
-        }
-
-        return points;
-    }
-
-    public static int[] convertEnumerate(String[] rank){
-        int[] enumerate = new int[rank.length];
-        for (int i=0; i<rank.length; i++) {
-            enumerate[i] = switch (rank[i]){
-                case "A" -> 0;
-                case "0" -> 10;
-                case "J" -> 11;
-                case "Q" -> 12;
-                case "K" -> 13;
-                default -> Integer.parseInt(rank[i]);
-            };
-        }
-
-        return enumerate;
-    }
-
-    public static int fifteenTwos(int[] card_points, int start, int current) {
+    private static int fifteenTwos(Hand hand, int start, int current) {
         // 2 or more cards sum to 15
         // Jack, King, Queen = 10
         // Ace = 1
-        int point = 0;
+        int fifteenTwosPoint = 0;
 
-        for (int i = start; i< card_points.length; i++) {
-            int value = current + card_points[i];
-            if (value == 15) point +=2;
-            if (value < 15) {
-                point += fifteenTwos(card_points, start = i+1, current = value);
+        for (int i = start; i < 5; i++) {
+            int runningPoints = current + hand.getCard(i).getPoints();
+            if (runningPoints == 15) fifteenTwosPoint +=2;
+            if (runningPoints < 15) {
+                fifteenTwosPoint += fifteenTwos(hand, i+1, runningPoints);
             }
         }
-        return point;
+        return fifteenTwosPoint;
     }
 
-    public static int runsPairs(String[] rank){
-        int pointsRuns=0;
-        int pointsPairs=0;
-        int[] enumerate= convertEnumerate(rank);
-        Arrays.sort(enumerate);
+    private static int runsPairs(Hand hand){
+        int runsPoints  = 0;
+        int pairsPoints = 0;
 
-        int runs  = 0;
+        int[] enumerate = hand.sorted();
+
+        int runs  = 1;
         int pairs = 0;
 
         for (int i=0; i<enumerate.length-1; i++) {
@@ -78,40 +35,42 @@ public class Calculator {
             }
             else if (enumerate[i+1]==enumerate[i]) pairs++;
             else {
-                runs = 0;
+                runs = 1;
                 pairs = 0;
             }
 
-            if (runs >2) pointsRuns = runs;
-            if (pairs == 1) pointsPairs += 2;
-            else if (pairs == 2) pointsPairs += 4;
-            else if (pairs == 3) pointsPairs += 6;
+            if (runs >2) runsPoints = runs;
+            if (pairs == 1) pairsPoints += 2;
+            else if (pairs == 2) pairsPoints += 4;
+            else if (pairs == 3) pairsPoints += 6;
         }
 
-        return pointsRuns + pointsPairs;
+        return runsPoints + pairsPoints;
     }
 
 
-    public static int flush(String[] rank, String[] suite) {
+    private static int flush(Hand hand) {
         boolean allSameSuite = true;
         int pointsFlush = 0;
         int pointsJack = 0;
+        String firstSuite = hand.getCard(0).getSuit();
+        String starterSuite = hand.getCard(4).getSuit();
 
-        for (int i = 1; i < suite.length - 1; i++) {
-            if (!suite[i].equals(suite[0])) {
+        for (int i = 1; i < 4; i++) {
+            if (!hand.getCard(i).getSuit().equals(firstSuite)) {
                 allSameSuite = false;
                 break;
             }
         }
 
         for (int i = 0; i < 4; i++) {
-            if (rank[i].equals("J") && suite[i].equals(suite[4])) {
+            if (hand.getCard(i).getRank().equals("J") && hand.getCard(i).getSuit().equals(starterSuite)) {
                 pointsJack = 1;
                 break;
             }
         }
 
-        if (allSameSuite) pointsFlush = suite[0].equals(suite[4]) ? 5 : 4;
+        if (allSameSuite) pointsFlush = firstSuite.equals(starterSuite) ? 5 : 4;
 
         return pointsFlush + pointsJack;
     }
