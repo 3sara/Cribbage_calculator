@@ -7,8 +7,8 @@ including points for "fifteen-twos", runs, pairs, and flushes.
 
 ## Cribbage Hand Representation
 - Each card is represented by a two-character string:
-    - The first character represents the rank:
-    - The second character represents the suit:
+    - The first character represents the rank.
+    - The second character represents the suit.
 
 
 ## Project Structure
