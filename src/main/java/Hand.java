@@ -5,7 +5,7 @@ public class Hand {
 
     Hand (Card[] cards) throws Exception {
         if (cards.length != 5) {
-            throw new Exception("E allora giochiamo con i piedi dai");
+            throw new Exception("You should specify exactly 5 cards (characters pairs composed by rank and suit)");
         }
 
         this.cards = cards;
@@ -13,7 +13,7 @@ public class Hand {
 
     Hand (String hand) throws Exception {
         if (hand.length() != 10) {
-            throw new Exception("E allora giochiamo con i piedi dai");
+            throw new Exception("You should specify exactly 5 cards (characters pairs composed by rank and suit)");
         }
 
         Card[] cards = new Card[5];
